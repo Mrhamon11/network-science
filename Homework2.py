@@ -5,6 +5,7 @@ import networkx as nx
 import pylab
 import matplotlib.pyplot as plt
 import math
+from random import shuffle
 A = np.matrix([[0, 1, 1, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0], [1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 1, 0, 0, 1, 0, 0], [0, 0, 1, 0, 0, 1, 1, 1], [0, 0, 0, 1, 1, 0, 1, 0], [0, 0, 0, 0, 1, 1, 0, 1], [0, 0, 0, 0, 1, 0, 1, 0]])
 G = nx.from_numpy_matrix(A)
 names = {0:'Zypman', 1:'Cwilich', 2:'Prodan', 3:'Buldyrev', 4:'Bastuscheck', 5:'Asherie', 6:'Edelman', 7:'Santos'}
@@ -112,6 +113,40 @@ def degree_and_closeness(G, names):
 	                wspace=None, hspace=None)
 	plt.axis('off')
 	plt.show()
+def kernigham_lin(G):
+	def cut_set(nodes1, nodes2, graph):
+		cut_set_size = 0
+		for edge in graph.edges():
+			if edge[0] in nodes1:
+				if edge[1] in nodes2:
+					cut_set_size += 1
+			else:
+				if edge[1] in nodes1:
+					cut_set_size += 1
+		return cut_set_size
+	nodes_list = list(G.nodes())
+	shuffle(nodes_list)
+	size = int(len(nodes_list) / 2)
+	nodes1 = list(nodes_list[:size])
+	nodes2 = list(nodes_list[size:])
+	print(nodes1)
+	print(nodes2)
+	min_cut = cut_set(nodes1, nodes2, G)
+	min_nodes1 = nodes1
+	min_nodes2 = nodes2
+	for x in range(size):
+		for y in range(size):
+			min_nodes1 = nodes1[:]
+			min_nodes2 = nodes2[:]
+			min_nodes1[x] = nodes2[y]
+			min_nodes2[y] = nodes1[x]
+			if min_cut > cut_set(min_nodes1, min_nodes2, G):
+				nodes1 = min_nodes1
+				nodes2 = min_nodes2
+				min_cut = cut_set(nodes1, nodes2, G)
+	return min_cut, nodes1, nodes2
+			
+
 def pearson_correlation_coefficeint(matrix, i, j):
 	size = len(matrix)
 	average_i = sum(matrix[i]) / size
@@ -135,14 +170,16 @@ def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, 
 				x += 1
 				print(str(x) + " " +  names[key] + " " + names[key2] + " " + similarity_name + ": " + str(similarity_function(A.tolist(), key, key2)))
 # plot_info(G, names)
-get_similarity_over_all_nodes(A.tolist(), "cosine_similarity", cosine_similarity, names)
-get_similarity_over_all_nodes(A.tolist(), "pearson similarity", pearson_correlation_coefficeint, names)
-# for key in range(len(names)):
-# 	for key2 in range(key, len(names)):
-# 		if key2 != key:
-# 			x += 1
-# 			print(str(x) + " " +  names[key] + " " + names[key2] + " cosine similarity: " + str(cosine_similarity(A.tolist(), key, key2)))
-#draw_balanence_graph(G, {(0, 1):'+', (0,2):'-'}, names)
-plot_info(G, names)
-degree_and_closeness(G, names)
-print(get_global_clustering(A.tolist()))
+# get_similarity_over_all_nodes(A.tolist(), "cosine_similarity", cosine_similarity, names)
+# get_similarity_over_all_nodes(A.tolist(), "pearson similarity", pearson_correlation_coefficeint, names)
+# # for key in range(len(names)):
+# # 	for key2 in range(key, len(names)):
+# # 		if key2 != key:
+# # 			x += 1
+# # 			print(str(x) + " " +  names[key] + " " + names[key2] + " cosine similarity: " + str(cosine_similarity(A.tolist(), key, key2)))
+# #draw_balanence_graph(G, {(0, 1):'+', (0,2):'-'}, names)
+# plot_info(G, names)
+# degree_and_closeness(G, names)
+# print(get_global_clustering(A.tolist()))
+cut_size, set1, set2 = kernigham_lin(G)
+print("cut_size {} {} {} ".format(cut_size, [names[a] for a in set1], [names[b] for b in set2]))

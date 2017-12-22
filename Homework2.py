@@ -130,8 +130,6 @@ def kernigham_lin(G):
 	size = int(len(nodes_list) / 2)
 	nodes1 = list(nodes_list[:size])
 	nodes2 = list(nodes_list[size:])
-	print(nodes1)
-	print(nodes2)
 	min_cut = cut_set(nodes1, nodes2, G)
 	min_nodes1 = nodes1
 	min_nodes2 = nodes2
@@ -173,6 +171,59 @@ def spectral_partition(G, L, group_1_size):
 		return cut_set(a_group1, a_group2, G), a_group1, a_group2
 	else:
 		return cut_set(b_group1, b_group2, G), b_group1, b_group2
+def modularity(G, sList):
+	modularity = 0
+	A = nx.to_numpy_matrix(G)
+	edges = nx.number_of_edges(G)
+	degrees = [x[1] for x in list(G.degree())]
+	for x in range(len(sList)):
+		for y in range(x):
+			modularity += (A[x,y] - (degrees[x] * degrees[y]) / (2 * edges)) * ((sList[x] * sList[y]  + 1 )/ 2)
+	return modularity * (1 / (2 * edges))
+def spectral_comunities(G):
+	mod_matrix = nx.modularity_matrix(G)
+	values, vectors = linalg.eig(mod_matrix)
+	max_index = 0
+	for x in range(2, len(values)):
+		if values[x] > values[max_index]:
+			max_index = x
+	eigenvector = vectors[max_index].tolist()
+	eigenvector = eigenvector[0]
+	sList = [1 if val > 0 else -1 for val in eigenvector]
+	return sList
+def simple_mod_max_equal_size_start(G, rounds):
+	nodes_list = list(G.nodes())
+	size = len(nodes_list)
+	shuffle(nodes_list)
+	nodes1 = list(nodes_list[:int(size / 2)])
+	nodes2 = list(nodes_list[int(size / 2):])
+	sList = [1 if x in nodes1 else -1 for x in range(size)]
+	print(sList)
+	for time in range(rounds):
+		current_modularity = modularity(G, sList)
+		#print("current_modularity = {}".format(current_modularity))
+		modlist = {current_modularity : sList}
+		done_nodes = [False for x in range(size)]
+		while not all(x for x in done_nodes):
+			best_mod_change = -10
+			best_mod_change_index = 0
+			temp_modularity = modularity(G, sList)
+			for x in range(size):
+				if not done_nodes[x]:
+					sList[x] *= -1
+					mod_change =  modularity(G, sList) - temp_modularity
+					if mod_change > best_mod_change:
+					 	best_mod_change = mod_change
+					 	best_mod_change_index = x
+					sList[x] *= -1
+			sList[best_mod_change_index] *= -1
+			done_nodes[best_mod_change_index] = True
+			modlist[modularity(G, sList)] = sList.copy()
+		best_state = max(modlist)
+		sList = modlist[best_state]
+	return sList
+
+
 def pearson_correlation_coefficeint(matrix, i, j):
 	size = len(matrix)
 	average_i = sum(matrix[i]) / size
@@ -207,7 +258,15 @@ def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, 
 # plot_info(G, names)
 # degree_and_closeness(G, names)
 # print(get_global_clustering(A.tolist()))
-cut_size, set1, set2 = kernigham_lin(G)
-print("kernigham lin: cut_size {} {} {} ".format(cut_size, [names[a] for a in set1], [names[b] for b in set2]))
-cut_size, set1, set2 = spectral_partition(G, L, 4)
-print("spectral_partition: cut_size {} {} {} ".format(cut_size, [names[a] for a in set1], [names[b] for b in set2]))
+# grouping = simple_mod_max_equal_size_start(G, 5)
+# print(grouping)
+# print(modularity(G, grouping))
+# print("group1: {} group2: {}".format([names[x] for x in range(8) if grouping[x] == 1], [names[x] for x in range(8) if grouping[x] == -1]))
+# cut_size, set1, set2 = kernigham_lin(G)
+# sList = [1 if x in set1 else -1 for x in range(len(set1 + set2))]
+# print("kernigham lin: cut_size {} {} {} modularity: {}".format(cut_size, [names[a] for a in set1], [names[b] for b in set2], modularity(G, sList)))
+# cut_size, set1, set2 = spectral_partition(G, L, 4)
+# sList = [1 if x in set1 else -1 for x in range(len(set1 + set2))]
+# print("spectral_partition: cut_size {} {} {} modularity: {}".format(cut_size, [names[a] for a in set1], [names[b] for b in set2], modularity(G, sList)))
+sList = spectral_comunities(G)
+print("spectral_comunities: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(8) if sList[x] == 1], [names[x] for x in range(8) if sList[x] == -1] ))

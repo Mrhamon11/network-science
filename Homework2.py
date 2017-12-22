@@ -9,6 +9,8 @@ from random import shuffle
 A = np.matrix([[0, 1, 1, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0], [1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 1, 0, 0, 1, 0, 0], [0, 0, 1, 0, 0, 1, 1, 1], [0, 0, 0, 1, 1, 0, 1, 0], [0, 0, 0, 0, 1, 1, 0, 1], [0, 0, 0, 0, 1, 0, 1, 0]])
 G = nx.from_numpy_matrix(A)
 names = {0:'Zypman', 1:'Cwilich', 2:'Prodan', 3:'Buldyrev', 4:'Bastuscheck', 5:'Asherie', 6:'Edelman', 7:'Santos'}
+L = nx.laplacian_matrix(G)
+#print([round(a, 5) for a in linalg.eigvals(L.A)])
 # G = nx.Graph()
 # G.add_edges_from([(1,2), (1, 6), (1, 4), (2, 4), (2, 3), (3, 5), (3, 4), (5, 4), (6, 5)])
 # names = {1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6'}
@@ -52,8 +54,6 @@ def plot_info(G, names):
 		largest = max(linalg.eigvals(matrix))
 		return 1/largest - 0.01
 
-	L = nx.laplacian_matrix(G)
-	print([round(a, 5) for a in linalg.eigvals(L.A)])
 	nx.draw_networkx(G, show_labels=True, labels=names)
 	degree_centralities = get_spread(nx.degree_centrality(G))
 	eigenvector_centralities = get_spread(nx.eigenvector_centrality(G))
@@ -113,17 +113,18 @@ def degree_and_closeness(G, names):
 	                wspace=None, hspace=None)
 	plt.axis('off')
 	plt.show()
+def cut_set(nodes1, nodes2, graph):
+	cut_set_size = 0
+	for edge in graph.edges():
+		if edge[0] in nodes1:
+			if edge[1] in nodes2:
+				cut_set_size += 1
+		else:
+			if edge[1] in nodes1:
+				cut_set_size += 1
+	return cut_set_size
+
 def kernigham_lin(G):
-	def cut_set(nodes1, nodes2, graph):
-		cut_set_size = 0
-		for edge in graph.edges():
-			if edge[0] in nodes1:
-				if edge[1] in nodes2:
-					cut_set_size += 1
-			else:
-				if edge[1] in nodes1:
-					cut_set_size += 1
-		return cut_set_size
 	nodes_list = list(G.nodes())
 	shuffle(nodes_list)
 	size = int(len(nodes_list) / 2)
@@ -146,7 +147,32 @@ def kernigham_lin(G):
 				min_cut = cut_set(nodes1, nodes2, G)
 	return min_cut, nodes1, nodes2
 			
-
+def spectral_partition(G, L, group_1_size):
+	values, vectors = linalg.eig(L.A)
+	if values[1] > values[0]:
+		second_to_min_index = 1
+		min_index = 0
+	else:
+		second_to_min_index = 0
+		min_index = 1
+	for x in range(2, len(values)):
+		if values[x] < values[second_to_min_index]:
+			if values[x] < values[min_index]:
+				second_to_min_index = min_index
+				min_index = x
+			else:
+				second_to_min_index = x
+	eigenvector = vectors[second_to_min_index]
+	node_dict = {eigenvector[x]:x for x in range(len(eigenvector))}
+	sorted_vector = np.sort(eigenvector)
+	a_group1 = [node_dict[sorted_vector[x]] for x in range(group_1_size)]
+	a_group2 = [node_dict[sorted_vector[x]] for x in range(group_1_size, len(values))]
+	b_group2 = [node_dict[sorted_vector[x]] for x in range(len(values) - group_1_size)]
+	b_group1 = [node_dict[sorted_vector[x]] for x in range(len(values) - group_1_size, len(values))]
+	if cut_set(a_group1, b_group2, G) < cut_set(b_group1, b_group2, G):
+		return cut_set(a_group1, a_group2, G), a_group1, a_group2
+	else:
+		return cut_set(b_group1, b_group2, G), b_group1, b_group2
 def pearson_correlation_coefficeint(matrix, i, j):
 	size = len(matrix)
 	average_i = sum(matrix[i]) / size
@@ -182,4 +208,6 @@ def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, 
 # degree_and_closeness(G, names)
 # print(get_global_clustering(A.tolist()))
 cut_size, set1, set2 = kernigham_lin(G)
-print("cut_size {} {} {} ".format(cut_size, [names[a] for a in set1], [names[b] for b in set2]))
+print("kernigham lin: cut_size {} {} {} ".format(cut_size, [names[a] for a in set1], [names[b] for b in set2]))
+cut_size, set1, set2 = spectral_partition(G, L, 4)
+print("spectral_partition: cut_size {} {} {} ".format(cut_size, [names[a] for a in set1], [names[b] for b in set2]))

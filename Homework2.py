@@ -69,13 +69,19 @@ def plot_info(G, names):
 		row_lables.append(names[x])
 	row_lables.append('Spread')
 	centralities = ['Degree', 'Eigenvector', 'Katz', 'Page Rank', 'Closeness', 'Betweenness']
+	print(data)
+	for row in range(len(data)):
+		for item in range(len(data[0])):
+			if type(data[row][item]) is not str:
+				data[row][item] = round(data[row][item], 3)
 	the_table = plt.table(cellText=data, rowLabels=row_lables, colLabels=centralities, loc='bottom')
 	plt.tight_layout()
 	plt.subplots_adjust(left=0.29, bottom=0.46, right=0.75, top=None,
 	                wspace=None, hspace=None)
-	the_table.set_fontsize(24)
 	the_table.scale(2,2)
 	plt.axis('off')
+	the_table.auto_set_font_size(False)
+	the_table.set_fontsize(10)
 	plt.show()
 def draw_balanence_graph(G, edges, names):
 	nx.draw_networkx_edge_labels(G, pos=nx.spring_layout(G), edge_labels=edges)

@@ -297,8 +297,6 @@ cut_size, set1, set2 = spectral_partition(G, L, 4)
 sList = [1 if x in set1 else -1 for x in range(len(set1 + set2))]
 print("spectral_partition: cut_size {} {} {} modularity: {}".format(cut_size, [names[a] for a in set1], [names[b] for b in set2], modularity(G, sList)))
 sList = spectral_comunities(G)
-print("spectral_comunities: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
-sList = simple_mod_max_equal_size_start(G, 20)
 print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
 sList = simple_mod_max_equal_size_start(G, 20)
 print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
@@ -306,5 +304,6 @@ sList = simple_mod_max_equal_size_start(G, 20)
 print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
 sList = simple_mod_max_equal_size_start(G, 20)
 print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
-
+print("spectral modularity: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
+sList = simple_mod_max_equal_size_start(G, 20)
 

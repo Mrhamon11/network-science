@@ -245,12 +245,17 @@ def pearson_correlation_coefficeint(matrix, i, j):
 	# print(L)
 	# print([round(a, 5) for a in linalg.eigvals(L)])
 def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, names):
-	x = 0
 	for key in range(len(names)):
 		for key2 in range(key, len(names)):
 			if key2 != key:
-				x += 1
-				print(str(x) + " " +  names[key] + " " + names[key2] + " " + similarity_name + ": " + str(similarity_function(A.tolist(), key, key2)))
+				print(names[key] + " " + names[key2] + " " + similarity_name + ": " + str(similarity_function(A.tolist(), key, key2)))
+def calcuateAssortativityCoefficient(Graph,attribute):
+   return (nx.attribute_assortativity_coefficient(Graph, attribute))
+
+def calculateAssortativityWithRespectToDegree(Graph):
+   return (nx.degree_assortativity_coefficient(Graph))
+
+
 # plot_info(G, names)
 # # for key in range(len(names)):
 # # 	for key2 in range(key, len(names)):
@@ -278,3 +283,8 @@ plot_info(G, names)
 degree_and_closeness(G, names)
 get_similarity_over_all_nodes(A.tolist(), "cosine_similarity", cosine_similarity, names)
 get_similarity_over_all_nodes(A.tolist(), "pearson similarity", pearson_correlation_coefficeint, names)
+G.add_nodes_from([0,1,3,5],school='YC')
+G.add_nodes_from([2,4,6,7],school='STERN')
+print("Assortativity Coefficient: {}".format(calcuateAssortativityCoefficient(G,'school')))
+print("Assortativity With Respect to Degree: {}".format(calculateAssortativityWithRespectToDegree(G)))
+

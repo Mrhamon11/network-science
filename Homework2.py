@@ -252,8 +252,6 @@ def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, 
 				x += 1
 				print(str(x) + " " +  names[key] + " " + names[key2] + " " + similarity_name + ": " + str(similarity_function(A.tolist(), key, key2)))
 # plot_info(G, names)
-# get_similarity_over_all_nodes(A.tolist(), "cosine_similarity", cosine_similarity, names)
-# get_similarity_over_all_nodes(A.tolist(), "pearson similarity", pearson_correlation_coefficeint, names)
 # # for key in range(len(names)):
 # # 	for key2 in range(key, len(names)):
 # # 		if key2 != key:
@@ -278,3 +276,5 @@ def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, 
 print(A)
 plot_info(G, names)
 degree_and_closeness(G, names)
+get_similarity_over_all_nodes(A.tolist(), "cosine_similarity", cosine_similarity, names)
+get_similarity_over_all_nodes(A.tolist(), "pearson similarity", pearson_correlation_coefficeint, names)

@@ -8,3 +8,59 @@
  [0 0 0 0 1 1 0 1]
  [0 0 0 0 1 0 1 0]]
 average clustering: 0.5625
+1 Zypman Cwilich cosine_similarity: 0.5
+2 Zypman Prodan cosine_similarity: 0.35355339059327373
+3 Zypman Buldyrev cosine_similarity: 0.5
+4 Zypman Bastuscheck cosine_similarity: 0.35355339059327373
+5 Zypman Asherie cosine_similarity: 0.0
+6 Zypman Edelman cosine_similarity: 0.0
+7 Zypman Santos cosine_similarity: 0.0
+8 Cwilich Prodan cosine_similarity: 0.35355339059327373
+9 Cwilich Buldyrev cosine_similarity: 0.5
+10 Cwilich Bastuscheck cosine_similarity: 0.35355339059327373
+11 Cwilich Asherie cosine_similarity: 0.0
+12 Cwilich Edelman cosine_similarity: 0.0
+13 Cwilich Santos cosine_similarity: 0.0
+14 Prodan Buldyrev cosine_similarity: 0.0
+15 Prodan Bastuscheck cosine_similarity: 0.0
+16 Prodan Asherie cosine_similarity: 0.5773502691896258
+17 Prodan Edelman cosine_similarity: 0.2886751345948129
+18 Prodan Santos cosine_similarity: 0.35355339059327373
+19 Buldyrev Bastuscheck cosine_similarity: 0.7071067811865475
+20 Buldyrev Asherie cosine_similarity: 0.0
+21 Buldyrev Edelman cosine_similarity: 0.4082482904638631
+22 Buldyrev Santos cosine_similarity: 0.0
+23 Bastuscheck Asherie cosine_similarity: 0.2886751345948129
+24 Bastuscheck Edelman cosine_similarity: 0.5773502691896258
+25 Bastuscheck Santos cosine_similarity: 0.35355339059327373
+26 Asherie Edelman cosine_similarity: 0.3333333333333333
+27 Asherie Santos cosine_similarity: 0.8164965809277261
+28 Edelman Santos cosine_similarity: 0.4082482904638631
+1 Zypman Cwilich pearson similarity: 0.33333333333333337
+2 Zypman Prodan pearson similarity: 0.0
+3 Zypman Buldyrev pearson similarity: 0.33333333333333337
+4 Zypman Bastuscheck pearson similarity: 0.0
+5 Zypman Asherie pearson similarity: -0.447213595499958
+6 Zypman Edelman pearson similarity: -0.447213595499958
+7 Zypman Santos pearson similarity: -0.33333333333333337
+8 Cwilich Prodan pearson similarity: 0.0
+9 Cwilich Buldyrev pearson similarity: 0.33333333333333337
+10 Cwilich Bastuscheck pearson similarity: 0.0
+11 Cwilich Asherie pearson similarity: -0.447213595499958
+12 Cwilich Edelman pearson similarity: -0.447213595499958
+13 Cwilich Santos pearson similarity: -0.33333333333333337
+14 Prodan Buldyrev pearson similarity: -0.5773502691896258
+15 Prodan Bastuscheck pearson similarity: -0.9999999999999998
+16 Prodan Asherie pearson similarity: 0.2581988897471611
+17 Prodan Edelman pearson similarity: -0.2581988897471611
+18 Prodan Santos pearson similarity: 0.0
+19 Buldyrev Bastuscheck pearson similarity: 0.5773502691896258
+20 Buldyrev Asherie pearson similarity: -0.447213595499958
+21 Buldyrev Edelman pearson similarity: 0.14907119849998599
+22 Buldyrev Santos pearson similarity: -0.33333333333333337
+23 Bastuscheck Asherie pearson similarity: -0.2581988897471611
+24 Bastuscheck Edelman pearson similarity: 0.2581988897471611
+25 Bastuscheck Santos pearson similarity: 0.0
+26 Asherie Edelman pearson similarity: -0.06666666666666667
+27 Asherie Santos pearson similarity: 0.74535599249993
+28 Edelman Santos pearson similarity: 0.14907119849998599

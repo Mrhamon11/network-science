@@ -11,9 +11,9 @@ G = nx.from_numpy_matrix(A)
 names = {0:'Zypman', 1:'Cwilich', 2:'Prodan', 3:'Buldyrev', 4:'Bastuscheck', 5:'Asherie', 6:'Edelman', 7:'Santos'}
 L = nx.laplacian_matrix(G)
 print([round(a, 5) for a in linalg.eigvals(L.A)])
-G = nx.Graph()
-G.add_edges_from([(1,2), (1, 6), (1, 4), (2, 4), (2, 3), (3, 5), (3, 4), (5, 4), (6, 5)])
-names = {1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6'}
+# G = nx.Graph()
+# G.add_edges_from([(1,2), (1, 6), (1, 4), (2, 4), (2, 3), (3, 5), (3, 4), (5, 4), (6, 5)])
+# names = {1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6'}
 def get_global_clustering(matrix):
 	def get_triplets(row_index, column_index):
 		x = column_index
@@ -66,10 +66,9 @@ def plot_info(G, names):
 		data.append([degree_centralities[key], eigenvector_centralities[key], katz_centralities[key], page_rank_centralities[key], closeness_centralities[key], betweeness_centralities[key]])
 	row_lables =[]
 	for x in range(len(names)):
-		row_lables.append(names[x + 1])
+		row_lables.append(names[x])
 	row_lables.append('Spread')
 	centralities = ['Degree', 'Eigenvector', 'Katz', 'Page Rank', 'Closeness', 'Betweenness']
-	print(data)
 	for row in range(len(data)):
 		for item in range(len(data[0])):
 			if type(data[row][item]) is not str:
@@ -101,7 +100,7 @@ def cosine_similarity(matrix, i, j):
 
 
 def degree_and_closeness(G, names):
-	print(nx.average_clustering(G))
+	print("average clustering: {}".format(nx.average_clustering(G)))
 	degree_list = list(G.degree())
 	degree_list.sort(key=lambda x : x[1])
 	clustering_coefficients = nx.clustering(G)
@@ -278,3 +277,4 @@ def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, 
 # print("spectral_comunities: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(8) if sList[x] == 1], [names[x] for x in range(8) if sList[x] == -1] ))
 print(A)
 plot_info(G, names)
+degree_and_closeness(G, names)

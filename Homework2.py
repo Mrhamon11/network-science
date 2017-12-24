@@ -203,7 +203,7 @@ def simple_mod_max_equal_size_start(G, rounds):
 	nodes1 = list(nodes_list[:int(size / 2)])
 	nodes2 = list(nodes_list[int(size / 2):])
 	sList = [1 if x in nodes1 else -1 for x in range(size)]
-	print(sList)
+	# print(sList)
 	for time in range(rounds):
 		current_modularity = modularity(G, sList)
 		#print("current_modularity = {}".format(current_modularity))
@@ -287,4 +287,24 @@ G.add_nodes_from([0,1,3,5],school='YC')
 G.add_nodes_from([2,4,6,7],school='STERN')
 print("Assortativity Coefficient: {}".format(calcuateAssortativityCoefficient(G,'school')))
 print("Assortativity With Respect to Degree: {}".format(calculateAssortativityWithRespectToDegree(G)))
+cut_size, set1, set2 = kernigham_lin(G)
+sList = [1 if x in set1 else -1 for x in range(len(set1 + set2))]
+print("kernigham lin: cut_size {} {} {} modularity: {}".format(cut_size, [names[a] for a in set1], [names[b] for b in set2], modularity(G, sList)))
+cut_size, set1, set2 = kernigham_lin(G)
+sList = [1 if x in set1 else -1 for x in range(len(set1 + set2))]
+print("kernigham lin: cut_size {} {} {} modularity: {}".format(cut_size, [names[a] for a in set1], [names[b] for b in set2], modularity(G, sList)))
+cut_size, set1, set2 = spectral_partition(G, L, 4)
+sList = [1 if x in set1 else -1 for x in range(len(set1 + set2))]
+print("spectral_partition: cut_size {} {} {} modularity: {}".format(cut_size, [names[a] for a in set1], [names[b] for b in set2], modularity(G, sList)))
+sList = spectral_comunities(G)
+print("spectral_comunities: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
+sList = simple_mod_max_equal_size_start(G, 20)
+print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
+sList = simple_mod_max_equal_size_start(G, 20)
+print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
+sList = simple_mod_max_equal_size_start(G, 20)
+print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
+sList = simple_mod_max_equal_size_start(G, 20)
+print("simple modularity maximalization: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(len(sList)) if sList[x] == 1], [names[x] for x in range(len(sList)) if sList[x] == -1] ))
+
 

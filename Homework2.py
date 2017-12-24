@@ -10,7 +10,7 @@ A = np.matrix([[0, 1, 1, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0], [1, 1, 0, 1, 
 G = nx.from_numpy_matrix(A)
 names = {0:'Zypman', 1:'Cwilich', 2:'Prodan', 3:'Buldyrev', 4:'Bastuscheck', 5:'Asherie', 6:'Edelman', 7:'Santos'}
 L = nx.laplacian_matrix(G)
-#print([round(a, 5) for a in linalg.eigvals(L.A)])
+print([round(a, 5) for a in linalg.eigvals(L.A)])
 # G = nx.Graph()
 # G.add_edges_from([(1,2), (1, 6), (1, 4), (2, 4), (2, 3), (3, 5), (3, 4), (5, 4), (6, 5)])
 # names = {1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6'}
@@ -268,5 +268,7 @@ def get_similarity_over_all_nodes(matrix, similarity_name, similarity_function, 
 # cut_size, set1, set2 = spectral_partition(G, L, 4)
 # sList = [1 if x in set1 else -1 for x in range(len(set1 + set2))]
 # print("spectral_partition: cut_size {} {} {} modularity: {}".format(cut_size, [names[a] for a in set1], [names[b] for b in set2], modularity(G, sList)))
-sList = spectral_comunities(G)
-print("spectral_comunities: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(8) if sList[x] == 1], [names[x] for x in range(8) if sList[x] == -1] ))
+# sList = spectral_comunities(G)
+# print("spectral_comunities: modularity {} {} {}".format(modularity(G, sList), [names[x] for x in range(8) if sList[x] == 1], [names[x] for x in range(8) if sList[x] == -1] ))
+print(A)
+plot_info(G, names)

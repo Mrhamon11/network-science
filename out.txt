@@ -64,13 +64,13 @@ Bastuscheck Santos pearson similarity: 0.0
 Asherie Edelman pearson similarity: -0.06666666666666667
 Asherie Santos pearson similarity: 0.74535599249993
 Edelman Santos pearson similarity: 0.14907119849998599
-Assortativity Coefficient: 0.05982905982905985
+Assortativity Coefficient: 0.05982905982905964
 Assortativity With Respect to Degree: -0.24999999999999953
-kernigham lin: cut_size 2 ['Edelman', 'Santos', 'Bastuscheck', 'Asherie'] ['Prodan', 'Cwilich', 'Zypman', 'Buldyrev'] modularity: 0.22520661157024796
-kernigham lin: cut_size 4 ['Asherie', 'Bastuscheck', 'Buldyrev', 'Edelman'] ['Zypman', 'Prodan', 'Cwilich', 'Santos'] modularity: 0.13429752066115702
+kernigham lin: cut_size 2 ['Cwilich', 'Zypman', 'Prodan', 'Buldyrev'] ['Asherie', 'Edelman', 'Bastuscheck', 'Santos'] modularity: 0.22520661157024796
+kernigham lin: cut_size 2 ['Asherie', 'Santos', 'Edelman', 'Bastuscheck'] ['Prodan', 'Buldyrev', 'Cwilich', 'Zypman'] modularity: 0.22520661157024796
 spectral_partition: cut_size 5 ['Prodan', 'Cwilich', 'Asherie', 'Zypman'] ['Bastuscheck', 'Buldyrev', 'Edelman', 'Santos'] modularity: 0.0909090909090909
-simple modularity maximalization: modularity 0.03512396694214875 ['Buldyrev', 'Santos'] ['Zypman', 'Cwilich', 'Prodan', 'Bastuscheck', 'Asherie', 'Edelman']
-simple modularity maximalization: modularity 0.22520661157024796 ['Zypman', 'Cwilich', 'Prodan', 'Buldyrev'] ['Bastuscheck', 'Asherie', 'Edelman', 'Santos']
-simple modularity maximalization: modularity 0.22520661157024796 ['Zypman', 'Cwilich', 'Prodan', 'Buldyrev'] ['Bastuscheck', 'Asherie', 'Edelman', 'Santos']
 simple modularity maximalization: modularity 0.22520661157024796 ['Bastuscheck', 'Asherie', 'Edelman', 'Santos'] ['Zypman', 'Cwilich', 'Prodan', 'Buldyrev']
-spectral modularity: modularity 0.22520661157024796 ['Bastuscheck', 'Asherie', 'Edelman', 'Santos'] ['Zypman', 'Cwilich', 'Prodan', 'Buldyrev']
+simple modularity maximalization: modularity 0.22520661157024796 ['Bastuscheck', 'Asherie', 'Edelman', 'Santos'] ['Zypman', 'Cwilich', 'Prodan', 'Buldyrev']
+simple modularity maximalization: modularity 0.22520661157024796 ['Bastuscheck', 'Asherie', 'Edelman', 'Santos'] ['Zypman', 'Cwilich', 'Prodan', 'Buldyrev']
+simple modularity maximalization: modularity 0.22520661157024796 ['Zypman', 'Cwilich', 'Prodan', 'Buldyrev'] ['Bastuscheck', 'Asherie', 'Edelman', 'Santos']
+spectral modularity: modularity 0.03512396694214875 ['Buldyrev', 'Santos'] ['Zypman', 'Cwilich', 'Prodan', 'Bastuscheck', 'Asherie', 'Edelman']

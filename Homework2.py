@@ -11,9 +11,9 @@ G = nx.from_numpy_matrix(A)
 names = {0:'Zypman', 1:'Cwilich', 2:'Prodan', 3:'Buldyrev', 4:'Bastuscheck', 5:'Asherie', 6:'Edelman', 7:'Santos'}
 L = nx.laplacian_matrix(G)
 print([round(a, 5) for a in linalg.eigvals(L.A)])
-# G = nx.Graph()
-# G.add_edges_from([(1,2), (1, 6), (1, 4), (2, 4), (2, 3), (3, 5), (3, 4), (5, 4), (6, 5)])
-# names = {1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6'}
+G = nx.Graph()
+G.add_edges_from([(1,2), (1, 6), (1, 4), (2, 4), (2, 3), (3, 5), (3, 4), (5, 4), (6, 5)])
+names = {1:'1', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6'}
 def get_global_clustering(matrix):
 	def get_triplets(row_index, column_index):
 		x = column_index
@@ -66,7 +66,7 @@ def plot_info(G, names):
 		data.append([degree_centralities[key], eigenvector_centralities[key], katz_centralities[key], page_rank_centralities[key], closeness_centralities[key], betweeness_centralities[key]])
 	row_lables =[]
 	for x in range(len(names)):
-		row_lables.append(names[x])
+		row_lables.append(names[x + 1])
 	row_lables.append('Spread')
 	centralities = ['Degree', 'Eigenvector', 'Katz', 'Page Rank', 'Closeness', 'Betweenness']
 	print(data)

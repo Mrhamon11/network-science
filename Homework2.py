@@ -110,8 +110,8 @@ def degree_and_closeness(G, names):
 		row_labels.append(names[pair[0]])
 		data.append([pair[1], clustering_coefficients[pair[0]]])
 	the_table = plt.table(cellText=data, rowLabels=row_labels, colLabels=['Degree', 'Local Clustering'], loc='bottom')
-
-	the_table.set_fontsize(24)
+	the_table.auto_set_font_size(False)
+	the_table.set_fontsize(12)
 	the_table.scale(2,2)
 	plt.tight_layout()
 	plt.subplots_adjust(left=0.29, bottom=0.5, right=0.48, top=None,

@@ -1,6 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import community
+# import community
 def delta_m(G, node, component, total_weightx2):
 	sum_in = 0
 	sum_total = 0
@@ -45,16 +45,16 @@ def modularity(G, sList):
 
 def twice_sum_of_weights(G):
 	return 2 *sum([edge[2]['weight'] for edge in G.edges(data=True)])
-def comparison(G):
-	return(community.best_partition(G))
-	buckets = {}
-	comparison = comparison(G)
-	for key in comparison:
-		if comparison[key] in buckets:
-			buckets[comparison[key]].append(key)
-		else:
-			buckets[comparison[key]] = [key]
-	print (buckets)
+# def comparison(G):
+# 	return(community.best_partition(G))
+# 	buckets = {}
+# 	comparison = comparison(G)
+# 	for key in comparison:
+# 		if comparison[key] in buckets:
+# 			buckets[comparison[key]].append(key)
+# 		else:
+# 			buckets[comparison[key]] = [key]
+# 	print (buckets)
 def calculate_comunitites_part_I(G):
 	def find_best_place_to_move(G, node, communities, community_numbers, total_weightx2):
 		max_delta_m = 0
@@ -145,6 +145,6 @@ community_numbers = {int(node) : int(node) for node in nodes}
 # 	print(delta_m(G, 0, communities[component], total_weightx2))
 # calculate_comunitites_part_I(G)
 # print(list(G))
-
+move()
 communities, community_numbers = calculate_comunitites_part_I(G)
 print(communities)

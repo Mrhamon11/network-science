@@ -62,16 +62,17 @@ def calculate_comunitites_part_I(G):
 		for neighbor in G.neighbors(node):
 			if node not in communities[community_numbers[neighbor]]:
 				if communities[community_numbers[node]] & set([node]):
+					print(communities[community_numbers[node]] & set([node]))
 					loss = delta_m(G, node, communities[community_numbers[node]] & set([node]), total_weightx2)
 				else:
 					loss = 0
 				mod_gain = delta_m(G, node, communities[community_numbers[neighbor]], total_weightx2) - loss
-				#print('mod_gain {}'.format(mod_gain))
+				print('mod_gain {} loss {}'.format(mod_gain, loss))
 				if mod_gain > max_delta_m:
 					max_delta_m = mod_gain
 					best_community = community_numbers[neighbor]
 		#print(max_delta_m)
-		print("max_delta_m: {}".format(max_delta_m))
+		print("max_delta_m: {} node: {} best_community: {}".format(max_delta_m, node, best_community))
 		return None if best_community <= 0 else best_community
 	total_weightx2 = twice_sum_of_weights(G)
 	nodes = list(G)
@@ -84,12 +85,8 @@ def calculate_comunitites_part_I(G):
 		community_number = find_best_place_to_move(G, node, communities,community_numbers, total_weightx2)
 		#print(community_number)
 		if community_number != None:
-			communities[community_number].add(node)
-			communities[community_numbers[node]].remove(node)
-			if not communities[community_numbers[nodes[index]]]:
-				del communities[community_numbers[nodes[index]]]
-			community_numbers[node] = community_number
 			start_over = len(nodes)
+			community_numbers[node], communities = move(node, community_numbers[node],community_number, communities)
 			# if communities[community_number] & set([node]):
 			# 	loss = delta_m(G, node, communities[community_number] & set([node]), total_weightx2)
 			# else:
@@ -97,12 +94,17 @@ def calculate_comunitites_part_I(G):
 			# mod_gain = delta_m(G, node, communities[community_numbers[node]], total_weightx2) - loss
 			# print("communities: {} mod_gain for moving back: {} loss {} unadjusted {}".format(communities, mod_gain, loss, delta_m(G, node, communities[community_numbers[community_number]], total_weightx2)))
 			
-			print("community_numbers: {} communities: {} best move : {} modularity: {}".format(community_numbers, communities, find_best_place_to_move(G, node, communities, community_numbers, total_weightx2), modularity(G, [community_numbers[x] for x in nodes])))
+			print("communities: {} modularity: {}".format(communities, modularity(G, [community_numbers[x] for x in nodes])))
 		else:
 			start_over -= 1
 		index = (index + 1) % len(nodes)
 	return communities, community_numbers
-
+def move(node, source, dest, communities):
+	communities[dest].add(node)
+	communities[source].remove(node)
+	if not communities[source]:
+		del communities[source]
+	return dest, communities
 def add_edge_to_graph(G, edge_tup):
 	G.add_edge(edge_tup[0], edge_tup[1], weight=1)
 	G.add_edge(edge_tup[1], edge_tup[0], weight=1)
@@ -143,5 +145,6 @@ community_numbers = {int(node) : int(node) for node in nodes}
 # 	print(delta_m(G, 0, communities[component], total_weightx2))
 # calculate_comunitites_part_I(G)
 # print(list(G))
+
 communities, community_numbers = calculate_comunitites_part_I(G)
 print(communities)

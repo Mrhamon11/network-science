@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import community
 import numpy as np
+from sys import argv
 def delta_m(G, node, component, total_weightx2):
 	sum_in = 0
 	sum_total = 0
@@ -71,11 +72,16 @@ def find_best_place_to_move_with_labels(G, node, communities, community_numbers,
 			# print('mod_gain {} loss {}'.format(mod_gain, loss))
 			communities[community_numbers[node]].add(node)
 			labels[(node, neighbor)] = round(mod_gain, 3)
-			if mod_gain > max_delta_m:
-				max_delta_m = mod_gain
-				best_community = community_numbers[neighbor]
+			if mod_gain >= max_delta_m:
+				if mod_gain == max_delta_m:
+					switch = random.randint(0, 1)
+				else:
+					switch = 1
+				if switch == 1:
+					max_delta_m = mod_gain
+					best_community = community_numbers[neighbor]
 	return None if best_community <= 0 else best_community, labels
-def calculate_comunitites_part_I(G, pos):
+def calculate_comunitites_part_I(G, pos, show_graph=True):
 	def find_best_place_to_move(G, node, communities, community_numbers, total_weightx2):
 		max_delta_m = 0
 		best_community = -1
@@ -97,6 +103,7 @@ def calculate_comunitites_part_I(G, pos):
 		return None if best_community <= 0 else best_community
 	total_weightx2 = twice_sum_of_weights(G)
 	nodes = list(G)
+	random.shuffle(nodes)
 	communities = {int(node):set([int(node)]) for node in nodes}
 	community_numbers = {int(node) : int(node) for node in nodes}
 	start_over = len(nodes)
@@ -106,7 +113,7 @@ def calculate_comunitites_part_I(G, pos):
 		community_number, labels = find_best_place_to_move_with_labels(G, node, communities,community_numbers, total_weightx2)
 		#print(community_number)
 		print("communities: {}".format(communities))
-		if labels:
+		if labels and show_graph:
 			print_graph(G, communities, labels, pos, node)
 			plt.show()
 			plt.clf()
@@ -124,6 +131,8 @@ def calculate_comunitites_part_I(G, pos):
 		else:
 			start_over -= 1
 		index = (index + 1) % len(nodes)
+		if index == 0:
+			random.shuffle(nodes)
 		# index = random.randrange(0, len(nodes))
 	return communities, community_numbers
 def move(node, source, dest, communities):
@@ -235,11 +244,14 @@ nodes = list(G)
 # print(list(G))
 # move()
 # comparison(G)
-communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G)
-)
+if argv[1] == 'F':
+	communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G), show_graph=False)
+	communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G), show_graph=False)
+else:
+	communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G), show_graph=True)
 # sList = simple_mod_max_equal_size_start(G, 1)
 # print([a for a in range(len(sList)) if sList[a] == 1], [a for a in range(len(sList)) if sList[a] == -1])
-# print(modularity(G, [community_numbers[x] for x in list(G)]))
+print(modularity(G, [community_numbers[x] for x in list(G)]))
 # print(modularity(G, sList))
 # while len(list(G)) > 2:
 # 	communities, community_numbers = calculate_comunitites_part_I(G)

@@ -4,6 +4,7 @@ import random
 import community
 import numpy as np
 from sys import argv
+import pickle
 def delta_m(G, node, component, total_weightx2):
 	sum_in = 0
 	sum_total = 0
@@ -112,7 +113,6 @@ def calculate_comunitites_part_I(G, pos, show_graph=True):
 		node = nodes[index]
 		community_number, labels = find_best_place_to_move_with_labels(G, node, communities,community_numbers, total_weightx2)
 		#print(community_number)
-		print("communities: {}".format(communities))
 		if labels and show_graph:
 			print_graph(G, communities, labels, pos, node)
 			plt.show()
@@ -207,35 +207,33 @@ def print_graph(G, communities, labels, pos, main=-1):
 	if node != -1:
 		plt.text(0,0, main)
 G = nx.Graph()
-G.add_edge(0, 2, weight=1)
-G.add_edge(0, 4, weight=1)
-G.add_edge(0, 5, weight=1)
-G.add_edge(0, 3, weight=1)
-G.add_edge(1, 2, weight=1)
-G.add_edge(1, 4, weight=1)
-G.add_edge(1, 7, weight=1)
-G.add_edge(2, 4, weight=1)
-G.add_edge(2, 5, weight=1)
-G.add_edge(2, 6, weight=1)
-G.add_edge(3, 7, weight=1)
-G.add_edge(4, 10, weight=1)
-G.add_edge(5, 11, weight=1)
-G.add_edge(5, 7, weight=1)
-G.add_edge(6, 7, weight=1)
-G.add_edge(6, 11, weight=1)
-G.add_edge(8, 9, weight=1)
-G.add_edge(8, 10, weight=1)
-G.add_edge(8, 11, weight=1)
-G.add_edge(8, 14, weight=1)
-G.add_edge(8, 15, weight=1)
-G.add_edge(9, 12, weight=1)
-G.add_edge(9, 14, weight=1)
-G.add_edge(10, 12, weight=1)
-G.add_edge(10, 13, weight=1)
-G.add_edge(10, 14, weight=1)
-G.add_edge(11, 13, weight=1)
-total_weightx2 = twice_sum_of_weights(G)
-nodes = list(G)
+# G.add_edge(0, 2, weight=1)
+# G.add_edge(0, 4, weight=1)
+# G.add_edge(0, 5, weight=1)
+# G.add_edge(0, 3, weight=1)
+# G.add_edge(1, 2, weight=1)
+# G.add_edge(1, 4, weight=1)
+# G.add_edge(1, 7, weight=1)
+# G.add_edge(2, 4, weight=1)
+# G.add_edge(2, 5, weight=1)
+# G.add_edge(2, 6, weight=1)
+# G.add_edge(3, 7, weight=1)
+# G.add_edge(4, 10, weight=1)
+# G.add_edge(5, 11, weight=1)
+# G.add_edge(5, 7, weight=1)
+# G.add_edge(6, 7, weight=1)
+# G.add_edge(6, 11, weight=1)
+# G.add_edge(8, 9, weight=1)
+# G.add_edge(8, 10, weight=1)
+# G.add_edge(8, 11, weight=1)
+# G.add_edge(8, 14, weight=1)
+# G.add_edge(8, 15, weight=1)
+# G.add_edge(9, 12, weight=1)
+# G.add_edge(9, 14, weight=1)
+# G.add_edge(10, 12, weight=1)
+# G.add_edge(10, 13, weight=1)
+# G.add_edge(10, 14, weight=1)
+# G.add_edge(11, 13, weight=1)
 # communities = {int(node):set([int(node)]) for node in nodes}
 # community_numbers = {int(node) : int(node) for node in nodes}
 # for component in G.neighbors(0):
@@ -244,25 +242,60 @@ nodes = list(G)
 # print(list(G))
 # move()
 # comparison(G)
+argv = ["./Louvain.py", "F", "0.edges"]
+input_file = open(argv[2])
+G = nx.Graph()
+for line in input_file:
+	edge = line.split(" ")
+	G.add_edge(int(edge[0]), int(edge[1]), weight=1)
 if argv[1] == 'F':
+	times = 10
+	communities_array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+	nodes = list(G)
+	print(nodes)
+	total_weightx2 = twice_sum_of_weights(G)
 	communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G), show_graph=False)
-	communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G), show_graph=False)
+	communities_array[times] = communities, community_numbers
+	print("communities: {} number of keys {}".format(communities, len(communities)))
+	while times >= 0:
+		times -=1
+		G =merge_communities(communities, community_numbers, G)
+		nodes = list(G)
+		print(nodes)
+		total_weightx2 = twice_sum_of_weights(G)
+		communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G), show_graph=False)
+		communities_array[times] = communities, community_numbers
+		number_of_communities =len(communities)
+		print("communities: {} number of keys {}".format(communities, number_of_communities))
 else:
-	communities, community_numbers = calculate_comunitites_part_I(G, pos = nx.circular_layout(G), show_graph=True)
+	slist = simple_mod_max_equal_size_start(G, int(argv[3]))
+	print([a for a in range(len(sList)) if sList[a] == 1], [a for a in range(len(sList)) if sList[a] == -1])
+	print(modularity(G, [community_numbers[x] for x in list(G)]))
+with open("./temp.txt", 'wb') as output:
+	pickle.dump(communities_array, output, pickle.HIGHEST_PROTOCOL)
+input_file = open("./firstcom.txt")
+output_file = open("./both_communitites.txt", "w")
+for line in input_file:
+     if "#" not in line:
+             items = line.split("[ \t]")
+             line2 = line + " " + com_pair[1][int(items[0])]
+             line2.replace("\n","")
+             line2 += "\n"
+             output_file.write(line2)
 # sList = simple_mod_max_equal_size_start(G, 1)
 # print([a for a in range(len(sList)) if sList[a] == 1], [a for a in range(len(sList)) if sList[a] == -1])
-print(modularity(G, [community_numbers[x] for x in list(G)]))
-# print(modularity(G, sList))
-# while len(list(G)) > 2:
-# 	communities, community_numbers = calculate_comunitites_part_I(G)
-# 	print(communities)
-# 	print(G.edges(data=True))
-# 	G = merge_communities(communities, community_numbers, G)
-# print(nx.get_edge_attributes(G , 'weight'))
-color_list = plt.cm.Set3(np.linspace(0, 1, len(list(G)) + 1))
-print_graph(G, communities, nx.get_edge_attributes(G , 'weight'), pos= nx.circular_layout(G))
-# print(communities)
-# print(newG.edges())
-# nx.draw(newG, pos=pos, with_labels=True)
-plt.axis('on')
-plt.show()
+# print(modularity(G, [community_numbers[x] for x in list(G)]))
+# # print(modularity(G, sList))
+# # while len(list(G)) > 2:
+# # 	communities, community_numbers = calculate_comunitites_part_I(G)
+# # 	print(communities)
+# # 	print(G.edges(data=True))
+# # 	G = merge_communities(communities, community_numbers, G)
+# # print(nx.get_edge_attributes(G , 'weight'))
+# color_list = plt.cm.Set3(np.linspace(0, 1, len(list(G)) + 1))
+# print_graph(G, communities, nx.get_edge_attributes(G , 'weight'), pos= nx.circular_layout(G))
+# # print(communities)
+# # print(newG.edges())
+# # nx.draw(newG, pos=pos, with_labels=True)
+# plt.axis('on')
+# plt.show()

@@ -27,8 +27,13 @@ for line in input_file:
 def find_group(x):
 	split = x.split(":")
 	return int(split[2])
-new_list.sort(key=find_group)
-output_file.close
+def find_Louvain(x):
+	items = x.split()
+	return int(items[4])
+def find_info(x):
+	items = x.split(":")
+	return int(items[0])
+new_list.sort(key=lambda x : (find_group(x), find_Louvain(x), find_info(x)))
 def add_to_dept_dict(diction, item, section):
 	if section not in diction:
 		diction[section] = {}
@@ -40,8 +45,11 @@ def add_to_dept_dict(diction, item, section):
 	return diction
 dept_dict = {}
 for item in new_list:
-	items = item.split()
-	dept_dict = add_to_dept_dict(dept_dict, int(items[4]), find_group(item))
+	dept_dict = add_to_dept_dict(dept_dict, find_Louvain(item), find_group(item))
 	output_file.write(item)
+max_lens = [] 
+for key in dept_dict:
+	max_lens.append((dept_dict[key][max(dept_dict[key], key=lambda x  : dept_dict[key][x])], sum(dept_dict[key][x] for x in dept_dict[key])))
+print (max_lens)
 print(dept_dict)
 print
